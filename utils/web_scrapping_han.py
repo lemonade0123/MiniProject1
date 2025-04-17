@@ -52,7 +52,7 @@ if __name__ == "__main__":
     print("한겨레 경제 뉴스 (RSS + 이미지)")
     news_items = scrape_hani_economy_rss_with_image()
     if news_items:
-        for news in news_items[:5]:  # 5개만 출력
+        for news in news_items[:10]:  # 5개만 출력
             print(f"- {news['title']}")
             print(f"  링크: {news['link']}")
             print(f"  이미지: {news['image']}\n")
