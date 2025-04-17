@@ -1,5 +1,6 @@
 import streamlit as st
 from sqlalchemy import create_engine, text
+import pandas as pd
 import os
 from dotenv import load_dotenv
 
@@ -16,9 +17,28 @@ class Database:
             pool_recycle=1800,
             pool_pre_ping=True
         )
+        
+    def fetch_df(self, query: str, params: dict = None):
+        with self.engine.connect() as conn:
+            result = conn.execute(text(query), params or {})
+            df = pd.DataFrame(result.fetchall(), columns=result.keys())
+            return df
+
+    def execute(self, query: str, params: dict = None):
+        with self.engine.connect() as conn:
+            conn.execute(text(query), params or {})
+            conn.commit()
+            
 
 #  연결 재사용을 위한 캐싱 처리리
 @st.cache_resource
 def get_db():
    
     return Database()
+
+
+
+db = get_db()
+users_df = db.fetch_df("SELECT * FROM product")
+print(users_df)
+st.dataframe(users_df)
