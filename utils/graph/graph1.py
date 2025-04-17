@@ -14,7 +14,7 @@ conn = mysql.connector.connect(
     database='news_db'         # 사용할 데이터베이스
 )
 
-# SQL 쿼리 실행
+# SQL 쿼리 실행 
 query = "SELECT * FROM word_list"
 df = pd.read_sql(query, conn)
 
