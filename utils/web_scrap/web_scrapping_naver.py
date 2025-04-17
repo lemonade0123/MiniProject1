@@ -43,16 +43,17 @@ class NaverEconomyScraper:
 
         return news_list
 
-if __name__ == "__main__":
-    print("Naver 경제 뉴스")
+## 테스트용용
+# if __name__ == "__main__":
+#     print("Naver 경제 뉴스")
 
-    scraper = NaverEconomyScraper(delay=0.7)
-    news_items = scraper.scrape_news(limit=5)
+#     scraper = NaverEconomyScraper(delay=0.7)
+#     news_items = scraper.scrape_news(limit=5)
 
-    if news_items:
-        for news in news_items:
-            print(f"- {news['title']}")
-            print(f"  링크: {news['link']}")
-            print(f"  이미지: {news['image']}\n")
-    else:
-        print("뉴스 기사를 찾을 수 없습니다.")
+#     if news_items:
+#         for news in news_items:
+#             print(f"- {news['title']}")
+#             print(f"  링크: {news['link']}")
+#             print(f"  이미지: {news['image']}\n")
+#     else:
+#         print("뉴스 기사를 찾을 수 없습니다.")
