@@ -2,7 +2,7 @@ from konlpy.tag import Okt
 
 
 class tokenizer:
-    def __init__(self, module):
+    def __init__(self):
         self.okt = Okt()
         # 불용어 리스트 (필요시 계속 추가 가능)
         self.stopwords = set(
@@ -38,13 +38,16 @@ class tokenizer:
 
     # 단어 추출 함수
     def extract_keywords(self, texts):
-        results = []
-        for text in texts:
-            # 명사만 추출
+        def clean_nouns(text):
             nouns = self.okt.nouns(text)
-            # 1글자 제거 + 불용어 제거
-            keywords = [
-                word for word in nouns if len(word) > 1 and word not in stopwords
-            ]
-            results.append(keywords)
-        return results
+            return [word for word in nouns if len(word) > 1 and word not in self.stopwords]
+
+        if isinstance(texts, str):
+            return clean_nouns(texts)
+
+        elif isinstance(texts, list):
+            return [clean_nouns(text) for text in texts]
+
+        else:
+            raise TypeError("입력은 str 또는 list[str] 타입이어야 합니다.")
+        

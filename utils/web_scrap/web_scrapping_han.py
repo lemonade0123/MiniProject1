@@ -2,8 +2,13 @@ import requests
 from bs4 import BeautifulSoup
 import time
 
+<<<<<<< HEAD:utils/web_scrapping_han.py
 class HaniEconomyScraper:
     def __init__(self):
+=======
+class HanEconomyScraper:
+    def __init__(self, delay=0.5):
+>>>>>>> a834d9d30c9d06440861e89efb4109740c65d731:utils/web_scrap/web_scrapping_han.py
         self.rss_url = "https://www.hani.co.kr/rss/economy/"
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
@@ -69,6 +74,7 @@ class HaniEconomyScraper:
             print(f"[오류] 기사 정보 가져오기 실패: {e}")
             return None, "등록일 없음", "수정일 없음"
 
+<<<<<<< HEAD:utils/web_scrapping_han.py
     def display_news(self, news_list, limit=10):
         print("한겨레 경제 뉴스")
         if not news_list:
@@ -86,3 +92,20 @@ if __name__ == "__main__":
     scraper = HaniEconomyScraper()
     news_items = scraper.scrape()
     scraper.display_news(news_items)
+=======
+
+## 테스트용
+# if __name__ == "__main__":
+#     print("한겨레 경제 뉴스")
+
+#     scraper = HaniEconomyScraper(delay=0.7)  # 0.7초 딜레이 설정
+#     news_items = scraper.scrape_news(limit=5)
+
+#     if news_items:
+#         for news in news_items:
+#             print(f"- {news['title']}")
+#             print(f"  링크: {news['link']}")
+#             print(f"  이미지: {news['image']}\n")
+#     else:
+#         print("뉴스 기사를 찾을 수 없습니다.")
+>>>>>>> a834d9d30c9d06440861e89efb4109740c65d731:utils/web_scrap/web_scrapping_han.py
