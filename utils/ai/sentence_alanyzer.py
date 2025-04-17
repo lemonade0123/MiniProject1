@@ -5,14 +5,15 @@ import torch
 import torch.nn.functional as F
 
 
+
 class SentenceAnalyzer:
     
     def __init__(self):
-        # KoBERT tokenizer (필요 시 확장 가능)
+        # KoBERT tokenizer
         # self.kobert_tokenizer = BertTokenizer.from_pretrained('monologg/kobert')
         # self.kobert_model = BertModel.from_pretrained('monologg/kobert')
 
-        # KoBART tokenizer & model (요약용)
+        # KoBART tokenizer
         self.kobart_tokenizer = PreTrainedTokenizerFast.from_pretrained('digit82/kobart-summarization')
         self.kobart_model = BartForConditionalGeneration.from_pretrained('digit82/kobart-summarization')
         
