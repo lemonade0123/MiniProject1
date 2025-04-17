@@ -46,7 +46,6 @@ class NaverEconomyScraper:
 
         return news_list
 
-<<<<<<< HEAD:utils/web_scrapping_naver.py
     def fetch_article_date(self, article_url):
         """기사 상세 페이지에 들어가서 작성 날짜 가져오기"""
         try:
@@ -76,19 +75,3 @@ if __name__ == "__main__":
             print(f"  날짜: {news['pub_date']}\n")
     else:
         print("뉴스 기사를 찾을 수 없습니다.")
-=======
-## 테스트용용
-# if __name__ == "__main__":
-#     print("Naver 경제 뉴스")
-
-#     scraper = NaverEconomyScraper(delay=0.7)
-#     news_items = scraper.scrape_news(limit=5)
-
-#     if news_items:
-#         for news in news_items:
-#             print(f"- {news['title']}")
-#             print(f"  링크: {news['link']}")
-#             print(f"  이미지: {news['image']}\n")
-#     else:
-#         print("뉴스 기사를 찾을 수 없습니다.")
->>>>>>> a834d9d30c9d06440861e89efb4109740c65d731:utils/web_scrap/web_scrapping_naver.py
