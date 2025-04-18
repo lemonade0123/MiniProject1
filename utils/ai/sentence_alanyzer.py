@@ -13,13 +13,14 @@ class SentenceAnalyzer:
         # self.kobert_tokenizer = BertTokenizer.from_pretrained('monologg/kobert')
         # self.kobert_model = BertModel.from_pretrained('monologg/kobert')
 
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         # KoBART tokenizer
         self.kobart_tokenizer = PreTrainedTokenizerFast.from_pretrained('digit82/kobart-summarization')
-        self.kobart_model = BartForConditionalGeneration.from_pretrained('digit82/kobart-summarization')
+        self.kobart_model = BartForConditionalGeneration.from_pretrained('digit82/kobart-summarization').to(device)
         
         # 감성 분석용 
         self.sentiment_tokenizer = BertTokenizer.from_pretrained("beomi/kcbert-base")
-        self.sentiment_model = BertForSequenceClassification.from_pretrained("beomi/kcbert-base", num_labels=2)
+        self.sentiment_model = BertForSequenceClassification.from_pretrained("beomi/kcbert-base", num_labels=2).to(device)
         self.sentiment_model.eval()  # 추론 모드로 변경
         
     def summarize(self, text: str, max_length: int = 100, min_length: int = 30) -> str:

@@ -1,5 +1,5 @@
 from konlpy.tag import Okt
-
+from collections import Counter
 
 class tokenizer:
     def __init__(self):
@@ -50,4 +50,10 @@ class tokenizer:
 
         else:
             raise TypeError("입력은 str 또는 list[str] 타입이어야 합니다.")
-        
+    
+    
+    def top_five_keywords(self, texts):
+        keywords = self.extract_keywords(texts)
+        counter = Counter(keywords)
+        top_5 = counter.most_common(5)
+        return [keyword for keyword, _ in top_5]
