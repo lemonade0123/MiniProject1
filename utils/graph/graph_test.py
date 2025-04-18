@@ -29,12 +29,22 @@ selected_keyword = st.text_input("추이 확인할 키워드를 입력하세요"
 sql = "SELECT * FROM word_list"
 df = visualizer.db.fetch_df(sql)
 
+st.write("데이터 확인:", df)
 
 if st.button("히트맵 보기"):
-    visualizer.visualize_heatmap(df)
+    if df.empty:
+        st.warning("데이터가 비어 있어요. 먼저 데이터를 확인해주세요.")
+    else:
+        visualizer.visualize_heatmap(df)
 
 if st.button("바 차트 보기"):
-    visualizer.bar_chart(df, selected_date_str)
+    if df.empty:
+        st.warning("데이터가 비어 있어요. 먼저 데이터를 확인해주세요.")
+    else:
+        visualizer.bar_chart(df, selected_date_str)
 
 if st.button("라인 차트 보기"):
-    visualizer.line_chart(df, selected_keyword)
+    if df.empty:
+        st.warning("데이터가 비어 있어요. 먼저 데이터를 확인해주세요.")
+    else:
+        visualizer.line_chart(df, selected_keyword)
