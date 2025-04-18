@@ -2,6 +2,7 @@ import streamlit as st
 import os
 from dotenv import load_dotenv
 from components.sidebar import render_sidebar
+from components.layout import render_layout
 
 # 스크래퍼 클래스 임포트
 from utils.web_scrap.web_scrapping_han import HaniEconomyScraper
@@ -71,23 +72,31 @@ def render_news_card(news):
 
         st.markdown('</div>', unsafe_allow_html=True)
 
-# --- 컬럼 나누기 (가운데 빈공간 늘리기) ---
-col1, spacer, col2 = st.columns([5, 1, 5])  # 비율 (5 : 1 : 5)
 
-# --- 한겨레 뉴스 표시 ---
-with col1:
-    st.header("한겨레 경제 뉴스")
-    if hani_news:
-        for news in hani_news[:5]:
-            render_news_card(news)
-    else:
-        st.write("한겨레 뉴스를 가져오지 못했습니다.")
 
-# --- 네이버 뉴스 표시 ---
-with col2:
-    st.header("네이버 경제 뉴스")
-    if naver_news:
-        for news in naver_news:
-            render_news_card(news)
-    else:
-        st.write("네이버 뉴스를 가져오지 못했습니다.")
+
+def get_content():
+    
+    # --- 컬럼 나누기 (가운데 빈공간 늘리기) ---
+    col1, spacer, col2 = st.columns([5, 1, 5])  # 비율 (5 : 1 : 5)
+
+    # --- 한겨레 뉴스 표시 ---
+    with col1:
+        st.header("한겨레 경제 뉴스")
+        if hani_news:
+            for news in hani_news[:5]:
+                render_news_card(news)
+        else:
+            st.write("한겨레 뉴스를 가져오지 못했습니다.")
+
+    # --- 네이버 뉴스 표시 ---
+    with col2:
+        st.header("네이버 경제 뉴스")
+        if naver_news:
+            for news in naver_news:
+                render_news_card(news)
+        else:
+            st.write("네이버 뉴스를 가져오지 못했습니다.")
+            
+            
+render_layout("경제 뉴스 모아보기", get_content)
