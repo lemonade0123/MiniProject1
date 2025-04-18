@@ -82,7 +82,47 @@ class HaniEconomyScraper:
             print(f"  등록일: {news['pub_date']}")
             print(f"  수정일: {news['update_date']}\n")
 
+
+    def get_news(self, news_url):
+        ## renewal2023->article_text
+        res = requests.get(news_url, headers=self.headers, timeout=5)
+        res.encoding = 'utf-8'
+        soup = BeautifulSoup(res.text, 'html.parser')
+        
+        article_div = soup.select_one("#renewal2023")
+        
+        ## 내용 찾을 수 없을때
+        
+        
+        result = {}
+        ## 제목 크롤링
+        result["news_title"] = soup.select_one('[class^="ArticleDetailView_title__"]').text
+        ## 날짜 크롤링
+        date_ul = soup.find("ul", class_=lambda c: c and "ArticleDetailView_dateList" in c)
+        date_items = date_ul.find_all("li", class_=lambda c: c and "ArticleDetailView_dateListItem" in c)
+        for li in date_items:   
+            text = li.get_text(strip=True)
+            span = li.find("span")
+            if not span:
+                continue
+            if "수정" in text:
+                result["news_update_date"] = span.get_text(strip=True)
+            elif "등록" in text:
+                result["news_publish_date"] = span.get_text(strip=True)
+        
+        
+        ## 기사 내용 크롤링
+        p_texts = soup.find_all("p", class_="text")
+        ## 본문 크롤링
+        result["news_text"] = "\n".join(p.get_text(strip=True) for p in p_texts[:-1])
+        
+        return result
+        
+        
+        
+        
+        
+        
 if __name__ == "__main__":
     scraper = HaniEconomyScraper()
-    news_items = scraper.scrape()
-    scraper.display_news(news_items)
+    print(scraper.get_news("https://www.hani.co.kr/arti/economy/economy_general/1193048.html"))
