@@ -2,7 +2,6 @@ import streamlit as st
 
 # 🔧 공통 레이아웃 컴포넌트
 def render_layout(title, left_func, col_ratio=(3, 1)):
-    st.set_page_config(layout="wide")
     with st.container():
         st.markdown(f"# {title}")
         left_col, right_col = st.columns(col_ratio)

@@ -8,6 +8,7 @@ from components.sidebar import render_sidebar
 from utils.web_scrap.web_scrapping_han import HaniEconomyScraper
 from utils.web_scrap.web_scrapping_naver import NaverEconomyScraper
 
+st.set_page_config(layout="wide")
 # --- 초기 설정 ---
 load_dotenv()
 
@@ -23,7 +24,7 @@ naver_scraper = NaverEconomyScraper(delay=0.7)
 # --- 뉴스 스크랩 ---
 hani_news = hani_scraper.scrape(limit=20)  # 한겨레도 최대 20개 스크랩하도록 수정
 naver_news = naver_scraper.scrape_news(limit=20)  # 네이버도 최대 20개 스크랩
-st.set_page_config(layout="wide")
+
 # --- 뉴스 필터링 함수 ---
 def filter_news(news_list, start_date, end_date, keyword):
     filtered = []
