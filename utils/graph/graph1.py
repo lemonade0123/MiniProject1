@@ -38,7 +38,7 @@ class KeywordVisualization:
         pivot_df = df.pivot_table(index='append_date', columns='append_word', values='append_count', fill_value=0)
         
         plt.figure(figsize=(14, 8))
-        sns.heatmap(pivot_df, annot=True, fmt='d', cmap='YlOrBr')
+        sns.heatmap(pivot_df, annot=True, fmt='1f', cmap='YlOrBr')
         plt.title('일별 키워드 등장 히트맵')
         plt.ylabel('날짜')
         plt.xlabel('키워드')
