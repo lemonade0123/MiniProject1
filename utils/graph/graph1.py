@@ -32,6 +32,9 @@ class KeywordVisualization:
 
     def visualize_heatmap(self, df):
         """히트맵을 생성하는 함수"""
+        
+        df['append_count'] = df['append_count'].astype(int)
+        
         pivot_df = df.pivot_table(index='append_date', columns='append_word', values='append_count', fill_value=0)
         
         plt.figure(figsize=(14, 8))
@@ -44,6 +47,9 @@ class KeywordVisualization:
 
     def bar_chart(self, df, date):
         """날짜별 키워드 등장 횟수 바 차트"""
+        
+        df['append_count'] = df['append_count'].astype(int)
+        
         day_df = df[df['append_date'] == date].sort_values(by='append_count', ascending=False)
         
         plt.figure(figsize=(10, 6))
@@ -57,6 +63,9 @@ class KeywordVisualization:
     
     def line_chart(self, df, keyword):
         """키워드 일별 등장 추이 라인 차트"""
+        
+        df['append_count'] = df['append_count'].astype(int)
+        
         keyword_df = df[df['append_word'] == keyword]
         
         plt.figure(figsize=(10, 5))
