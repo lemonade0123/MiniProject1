@@ -89,8 +89,10 @@ def render_news_card(news):
                 f'<img src="{news["image"]}" class="fixed-image">',
                 unsafe_allow_html=True
             )
-
-        st.markdown(f"[📰 기사 전체 보기]({news['link']})", unsafe_allow_html=True)
+        if st.button("📊 기사 분석 보기", key=f"analyze_{news['link']}"):
+            st.session_state["news_url"] = news['link']
+            st.switch_page("pages/News_Analysis.py")
+        # st.markdown(f"[📰 기사 전체 보기]({news['link']})", unsafe_allow_html=True)
 
         pub = news.get('pub_date', '등록일 없음')
         update = news.get('update_date', None)

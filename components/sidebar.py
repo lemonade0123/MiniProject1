@@ -30,7 +30,7 @@ def render_sidebar():
 
         # --- 분석 페이지 이동 버튼 ---
         if st.button("📊 분석 페이지로 이동"):
-            st.switch_page("pages/News_Analysis.py")
+            st.switch_page("pages/News_Aggregate.py")
 
         st.markdown("---")
         st.subheader("🔍 고급 검색")
