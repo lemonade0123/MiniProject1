@@ -8,55 +8,22 @@ from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
 
+# scrap_test.py 최상단에 아래 코드 추가
+import sys
+import os
+
+# 루트 디렉토리 경로 추가
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+
+from utils.database.db_config import get_db
+
 load_dotenv()
-
-# Database 연결 클래스
-class Database:
-    def __init__(self):
-        self.engine = create_engine(
-            os.getenv("DATABASE_URL"),
-            pool_size=5,
-            max_overflow=2,
-            pool_recycle=1800,
-            pool_pre_ping=True
-        )
-
-    def fetch_df(self, query: str, params: dict = None):
-        with self.engine.connect() as conn:
-            result = conn.execute(text(query), params or {})
-            df = pd.DataFrame(result.fetchall(), columns=result.keys())
-            return df
-
-    def execute(self, query: str, params: dict = None):
-        with self.engine.connect() as conn:
-            conn.execute(text(query), params or {})
-            conn.commit()
-
-    def insert(self, table_name: str, data: dict):
-        if isinstance(data, dict):
-            data = [data]  # 단일 row도 리스트로 변환
-
-        if not data:
-            return  # 빈 리스트면 아무 것도 하지 않음
-
-        columns = ', '.join(data[0].keys())
-        placeholders = ', '.join([f":{key}" for key in data[0].keys()])
-        query = f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})"
-
-        with self.engine.connect() as conn:
-            conn.execute(text(query), data)  # 리스트 넘기면 다건 처리됨
-            conn.commit()
-
-# 연결 재사용을 위한 캐싱 처리
-@st.cache_resource
-def get_db():
-    return Database()
 
 
 # 시각화 함수
 class KeywordVisualization:
-    def __init__(self, db: Database, font_path='C:\\Windows\\Fonts\\malgunsl.ttf'):
-        self.db = db
+    def __init__(self,font_path='C:\\Windows\\Fonts\\malgunsl.ttf'):
+        self.db = get_db()
         self.font_path = font_path
         
         # 폰트 설정
@@ -124,7 +91,9 @@ class KeywordVisualization:
             return
 
         # 워드클라우드 생성
-        word_freq = dict(zip(df['append_word'], df['total_count']))
+        word_freq = dict(zip(df['append_word'], [int(x) for x in df['total_count']]))
+        
+        
         wc = WordCloud(font_path=self.font_path, width=800, height=400, background_color='white')
         wc.generate_from_frequencies(word_freq)
 
@@ -134,3 +103,4 @@ class KeywordVisualization:
         plt.axis('off')
         plt.title(f"{start_str} ~ {end_str} 워드클라우드")
         st.pyplot()  
+        
