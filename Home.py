@@ -51,14 +51,13 @@ def filter_news(news_list, start_date, end_date, keyword):
 filtered_hani_news = filter_news(hani_news, start_date, end_date, keyword)
 filtered_naver_news = filter_news(naver_news, start_date, end_date, keyword)
 
-# --- 두 컬럼으로 나누기 ---
-col1, col2 = st.columns(2, gap="large")
+# --- 두 컬럼으로 나누기 (가로폭 줄이기) ---
+col1, col2 = st.columns([0.5, 0.5], gap="small")
 
 # --- 카드 스타일 통일 함수 ---
 def render_news_card(news):
     with st.container():
-        st.markdown(
-            """
+        st.markdown("""
             <style>
             .news-card {
                 padding: 10px;
@@ -67,16 +66,20 @@ def render_news_card(news):
                 margin-bottom: 20px;
                 background-color: #fafafa;
                 box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+                max-width: 300px;  # 카드 너비 조정
+            }
+            .news-card h3 {
+                font-size: 12px;  # 제목 크기 조정
             }
             .fixed-image {
-                width: 100%;
-                height: 180px;
+                width: 80%;
+                height: 150px;
                 object-fit: cover;
                 border-radius: 8px;
                 margin-bottom: 10px;
             }
             </style>
-            """, unsafe_allow_html=True
+        """, unsafe_allow_html=True
         )
 
         st.markdown('<div class="news-card">', unsafe_allow_html=True)
