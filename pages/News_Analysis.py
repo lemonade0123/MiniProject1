@@ -95,4 +95,4 @@ class NewsAnalysis:
 
 
 render_sidebar()
-render_layout("뉴스 분석", NewsAnalysis().get_content)
+render_layout("📰 뉴스 분석", NewsAnalysis().get_content)
