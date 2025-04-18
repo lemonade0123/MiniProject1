@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 from components.sidebar import render_sidebar
 
 # 스크래퍼 클래스 임포트
-from components.hani_scraper import HaniEconomyScraper
-from components.naver_scraper import NaverEconomyScraper
+from utils.web_scrap.web_scrapping_han import HaniEconomyScraper
+from utils.web_scrap.web_scrapping_naver import NaverEconomyScraper
 
 load_dotenv()
 render_sidebar()
