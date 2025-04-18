@@ -8,6 +8,7 @@ from components.sidebar import render_sidebar
 from utils.web_scrap.web_scrapping_han import HaniEconomyScraper
 from utils.web_scrap.web_scrapping_naver import NaverEconomyScraper
 
+st.set_page_config(layout="wide")
 # --- 초기 설정 ---
 load_dotenv()
 

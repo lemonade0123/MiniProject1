@@ -2,6 +2,7 @@ import streamlit as st
 from components.layout import render_layout
 from utils.ai.sentence_alanyzer import SentenceAnalyzer
 from utils.web_scrap.web_scrapping_han import HaniEconomyScraper
+from utils.web_scrap.web_scrapping_naver import NaverEconomyScraper
 from utils.tokenizer.tokenizer import tokenizer
 from urllib.parse import urlparse
 from components.sidebar import render_sidebar
@@ -13,6 +14,7 @@ class NewsAnalysis:
         self.analyzer = SentenceAnalyzer()
         self.tokenizer = tokenizer()
         self.haniEconomyScraper = HaniEconomyScraper()
+        self.naverEconomyScraper = NaverEconomyScraper()
 
     def news_analysis(self):
         # 한겨레, 네이버뉴스 나누어야함.
@@ -35,30 +37,21 @@ class NewsAnalysis:
 
     def get_content(self):
         ## 원본. 밑에는 테스트용 값 박기
-        # if self.is_valid_url(st.session_state["news_url"]):
-        news_url = "https://www.hani.co.kr/arti/politics/election/1193116.html"
-        print(self.is_valid_url(news_url))
+        news_url = st.session_state["news_url"]
         if self.is_valid_url(news_url):
             ## 뉴스를 가져오기
             news_info = self.get_news_info(news_url)
-
-            print(news_info["news_text"])
             ## 가져온 뉴스를 분석하기
-
             ## 단어 가져오기
             keywords = self.tokenizer.top_five_keywords(news_info["news_text"])
-
             ## 요약
             summation = self.analyzer.summarize(news_info["news_text"])
-
             ## 분석한 내용을 토대로 뿌려주기
-
             # 타이틀, 날짜 출력
             st.markdown(f"## {news_info["news_title"]}")
             st.markdown(f"### {news_info["news_publish_date"]}")
             # 단어 리스트
             st.markdown(f"**키워드** {", ".join(keywords)}")
-
             # 요약본
             st.markdown(f"요약 : {summation}")
 
@@ -88,11 +81,10 @@ class NewsAnalysis:
             return self.haniEconomyScraper.get_news(url)
 
         elif "naver.com" in domain:
-            return "네이버"
-
-        elif "youtube.com" in domain:
-            return "유튜브"
+            return self.naverEconomyScraper.get_news(url)
 
 
+
+st.set_page_config(layout="wide")
 render_sidebar()
 render_layout("📰 뉴스 분석", NewsAnalysis().get_content)

@@ -61,6 +61,27 @@ class NaverEconomyScraper:
             print(f"날짜 가져오기 실패: {e}")
             return None
 
+    def get_news(self, news_url):
+        
+        res = requests.get(news_url, headers=self.headers, timeout=5)
+        res.encoding = 'utf-8'
+        soup = BeautifulSoup(res.text, 'html.parser')
+        
+        news_div = soup.select_one("#ct")
+        
+        result = {}
+        ## 제목 크롤링
+        result["news_title"] = news_div.select_one("#title_area").text
+        ## 날짜 크롤링
+        result["news_publish_date"] = news_div.select_one("span.media_end_head_info_datestamp_time")["data-date-time"].split(" ")[0]
+        
+        ## 기사 내용 크롤링
+        text = news_div.find('article', {'id': 'dic_area'})
+        result["news_text"] = text.get_text(separator='\n', strip=True)
+        
+        return result
+        
+        
 if __name__ == "__main__":
     print("Naver 경제 뉴스")
 
