@@ -1,15 +1,18 @@
 import streamlit as st
 import os
 from dotenv import load_dotenv
-from components.sidebar import render_sidebar
-from components.layout import render_layout
+from datetime import datetime, date
 
-# 스크래퍼 클래스 임포트
+# --- 컴포넌트 및 스크래퍼 임포트 ---
+from components.sidebar import render_sidebar
 from utils.web_scrap.web_scrapping_han import HaniEconomyScraper
 from utils.web_scrap.web_scrapping_naver import NaverEconomyScraper
 
+# --- 초기 설정 ---
 load_dotenv()
-render_sidebar()
+
+# --- 사이드바 렌더링 (start, end, keyword 받아오기) ---
+start_date, end_date, keyword = render_sidebar()
 
 st.title("📰 경제 뉴스 모아보기")
 
@@ -18,11 +21,38 @@ hani_scraper = HaniEconomyScraper()
 naver_scraper = NaverEconomyScraper(delay=0.7)
 
 # --- 뉴스 스크랩 ---
-hani_news = hani_scraper.scrape()
-naver_news = naver_scraper.scrape_news(limit=5)
+hani_news = hani_scraper.scrape(limit=20)  # 한겨레도 최대 20개 스크랩하도록 수정
+naver_news = naver_scraper.scrape_news(limit=20)  # 네이버도 최대 20개 스크랩
+
+# --- 뉴스 필터링 함수 ---
+def filter_news(news_list, start_date, end_date, keyword):
+    filtered = []
+    for news in news_list:
+        pub_date_str = news.get('pub_date')
+
+        pub_date = None
+        if pub_date_str:
+            try:
+                pub_date = datetime.strptime(pub_date_str[:10], "%Y-%m-%d").date()
+            except:
+                pass
+
+        matches_date = True
+        if pub_date:
+            matches_date = start_date <= pub_date <= end_date
+
+        matches_keyword = keyword.lower() in news['title'].lower() if keyword else True
+
+        if matches_date and matches_keyword:
+            filtered.append(news)
+    return filtered
+
+# --- 필터링 적용 ---
+filtered_hani_news = filter_news(hani_news, start_date, end_date, keyword)
+filtered_naver_news = filter_news(naver_news, start_date, end_date, keyword)
 
 # --- 두 컬럼으로 나누기 ---
-col1, col2 = st.columns(2)
+col1, col2 = st.columns(2, gap="large")
 
 # --- 카드 스타일 통일 함수 ---
 def render_news_card(news):
@@ -61,42 +91,30 @@ def render_news_card(news):
 
         st.markdown(f"[📰 기사 전체 보기]({news['link']})", unsafe_allow_html=True)
 
-        # 등록일/수정일 모두 있으면 둘 다 표시
         pub = news.get('pub_date', '등록일 없음')
         update = news.get('update_date', None)
 
-        if update:  # 수정일 있는 경우
+        if update:
             st.caption(f"🕓 등록일: {pub} / 수정일: {update}")
-        else:  # 수정일 없는 경우
+        else:
             st.caption(f"🕓 작성일: {pub}")
 
         st.markdown('</div>', unsafe_allow_html=True)
 
+# --- 한겨레 뉴스 표시 ---
+with col1:
+    st.header("한겨레 경제 뉴스")
+    if filtered_hani_news:
+        for news in filtered_hani_news[:20]:  # 최대 5개 보여주기 (필터링 결과에서)
+            render_news_card(news)
+    else:
+        st.write("🔎 조건에 맞는 한겨레 뉴스를 찾을 수 없습니다.")
 
-
-
-def get_content():
-    
-    # --- 컬럼 나누기 (가운데 빈공간 늘리기) ---
-    col1, spacer, col2 = st.columns([5, 1, 5])  # 비율 (5 : 1 : 5)
-
-    # --- 한겨레 뉴스 표시 ---
-    with col1:
-        st.header("한겨레 경제 뉴스")
-        if hani_news:
-            for news in hani_news[:5]:
-                render_news_card(news)
-        else:
-            st.write("한겨레 뉴스를 가져오지 못했습니다.")
-
-    # --- 네이버 뉴스 표시 ---
-    with col2:
-        st.header("네이버 경제 뉴스")
-        if naver_news:
-            for news in naver_news:
-                render_news_card(news)
-        else:
-            st.write("네이버 뉴스를 가져오지 못했습니다.")
-            
-            
-render_layout("경제 뉴스 모아보기", get_content)
+# --- 네이버 뉴스 표시 ---
+with col2:
+    st.header("네이버 경제 뉴스")
+    if filtered_naver_news:
+        for news in filtered_naver_news[:20]:  # 최대 5개 보여주기 (필터링 결과에서)
+            render_news_card(news)
+    else:
+        st.write("🔎 조건에 맞는 네이버 뉴스를 찾을 수 없습니다.")

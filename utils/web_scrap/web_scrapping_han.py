@@ -9,7 +9,7 @@ class HaniEconomyScraper:
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
         }
 
-    def scrape(self):
+    def scrape(self, limit=20):
         res = requests.get(self.rss_url, headers=self.headers)
         res.encoding = 'utf-8'
         soup = BeautifulSoup(res.text, 'xml')
@@ -120,7 +120,7 @@ class HaniEconomyScraper:
         
         
         
-        
+
         
         
 if __name__ == "__main__":

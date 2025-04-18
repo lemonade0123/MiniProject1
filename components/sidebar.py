@@ -7,7 +7,7 @@ load_dotenv()
 
 def render_sidebar():
     with st.sidebar:
-        # --- 로고 ---
+        # --- 로고 (필요시 주석 해제) ---
         # st.image("assets/logo.png", use_column_width=True)
         st.markdown("---")
 
@@ -28,7 +28,7 @@ def render_sidebar():
             </style>
         """, unsafe_allow_html=True)
 
-        # --- 분석 페이지 이동 ---
+        # --- 분석 페이지 이동 버튼 ---
         if st.button("📊 분석 페이지로 이동"):
             st.switch_page("pages/News_Analysis.py")
 
@@ -41,22 +41,13 @@ def render_sidebar():
             value=(date.today(), date.today())
         )
 
-        # --- 검색어 입력 ---
+        # --- 키워드 입력 ---
         keyword = st.text_input("검색어 입력", placeholder="검색어를 입력하세요")
 
-        # --- 검색 버튼 또는 Enter 키 처리 ---
-        if st.button("🔎 검색") or (keyword and st.session_state.get("trigger_search", False)):
-            # 검색 페이지로 이동 + 파라미터 전달
-            st.switch_page(
-                f"pages/Search_Result.py?start={start_date}&end={end_date}&q={keyword}"
-            )
+        st.markdown("---")
 
-        # Enter로 자동 검색을 위한 키 입력 처리
-        if keyword:
-            st.session_state["trigger_search"] = True
-        else:
-            st.session_state["trigger_search"] = False
-
+        # --- 리턴해서 main.py 쪽에서 필터링 ---
         return start_date, end_date, keyword
+
             
         
