@@ -86,6 +86,5 @@ class NewsAnalysis:
 
 
 
-st.set_page_config(layout="wide")
 render_sidebar()
 render_layout("📰 뉴스 분석", NewsAnalysis().get_content)
