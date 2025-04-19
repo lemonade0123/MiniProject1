@@ -30,7 +30,7 @@ class HaniEconomyScraper:
                 'pub_date': pub_date,
                 'update_date': update_date
             })
-
+            
             time.sleep(0.5)
 
         return news_list
@@ -119,7 +119,42 @@ class HaniEconomyScraper:
         return result
         
         
+    def scrape_v2(self, limit=20):
+
+        ## 검색        
+        res = requests.get("https://www.hani.co.kr/arti/economy/economy_general", headers=self.headers)
+        res.encoding = "utf-8"
+        soup = BeautifulSoup(res.text, "html.parser")
+
+        file_name = "scraped_page.html"  # 저장할 파일 이름 설정
+        with open(file_name, "w", encoding="utf-8") as f:
+            f.write(soup.prettify())  # 또는 f.write(html_content) 로 원본 HTML 저장 가
+
+        ## 데이터 넣기
+        news_list = []
+
+        ## 검색이 아닐 시
+
+        ## 아이템 찾기
+        search_news_list = soup.select("div[class^='section_left'] > div > ul > li[class^='ArticleList_item']")
+
+        for news in search_news_list:
+            # 이미지 찾기
+            image = news.select_one("article > div[class^='BaseArticleCard_card'] a > div > div > div > img")["src"]
+
+            # 링크 찾기
+            link = news.select_one("article > div[class^='BaseArticleCard_card'] > div[class^='BaseArticleCard_content'] > a")["href"]
+
+            # 제목 찾기
+            title = news.select_one("article > div[class^='BaseArticleCard_card'] > div[class^='BaseArticleCard_content'] > a > div").getText()
+
+            # 시간 찾기
+            pub_date = news.select_one("article > div[class^='BaseArticleCard_card'] > div[class^='BaseArticleCard_content'] > div > div").getText()
+
+            news_list.append({"title": title, "link": link, "image": image, "pub_date": pub_date})
         
+        return news_list
+
 
         
         
