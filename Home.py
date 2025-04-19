@@ -16,10 +16,7 @@ class HomePage:
 
     def __init__(self):
         pass
-        
-
-
-
+    
     # --- 카드 렌더링 함수 ---
     def render_news_card(self, news):
         with st.container():
