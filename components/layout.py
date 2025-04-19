@@ -1,4 +1,6 @@
 import streamlit as st
+from pages.News_Popular import get_popular_page
+
 
 # 🔧 공통 레이아웃 컴포넌트
 def render_layout(title, left_func, col_ratio=(3, 1)):
@@ -12,6 +14,7 @@ def render_layout(title, left_func, col_ratio=(3, 1)):
 
         ## 오른쪽 사이드바 내용이 들어감
         with right_col:
-            st.text("test")
+            get_popular_page()
+            st.markdown("testtewwtwetew")
             
             

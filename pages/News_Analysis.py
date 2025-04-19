@@ -37,7 +37,8 @@ class NewsAnalysis:
 
     def get_content(self):
         ## 원본. 밑에는 테스트용 값 박기
-        news_url = st.session_state["news_url"]
+        # news_url = st.session_state["news_url"]
+        news_url = "https://www.hani.co.kr/arti/economy/economy_general/1193192.html"
         if self.is_valid_url(news_url):
             ## 뉴스를 가져오기
             news_info = self.get_news_info(news_url)

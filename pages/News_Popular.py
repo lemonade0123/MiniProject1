@@ -9,7 +9,6 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
-st.set_page_config(layout="wide")
 load_dotenv()
 
 # --- 사이드바 렌더링 ---
@@ -64,11 +63,13 @@ def render_popular_card(news):
         st.markdown('</div>', unsafe_allow_html=True)
 
 # --- 인기 기사 렌더링 ---
-with st.spinner("데이터를 불러오는 중입니다..."):
-    popular_news = get_popular_articles()
+def get_popular_page():
+    with st.spinner("데이터를 불러오는 중입니다..."):
+        popular_news = get_popular_articles()
 
-if popular_news:
-    for article in popular_news:
-        render_popular_card(article)
-else:
-    st.warning("😥 인기 기사를 불러오지 못했습니다.")
+    if popular_news:
+        for article in popular_news:
+            render_popular_card(article)
+    else:
+        st.warning("😥 인기 기사를 불러오지 못했습니다.")
+
