@@ -126,14 +126,8 @@ class HaniEconomyScraper:
         res.encoding = "utf-8"
         soup = BeautifulSoup(res.text, "html.parser")
 
-        file_name = "scraped_page.html"  # 저장할 파일 이름 설정
-        with open(file_name, "w", encoding="utf-8") as f:
-            f.write(soup.prettify())  # 또는 f.write(html_content) 로 원본 HTML 저장 가
-
         ## 데이터 넣기
         news_list = []
-
-        ## 검색이 아닐 시
 
         ## 아이템 찾기
         search_news_list = soup.select("div[class^='section_left'] > div > ul > li[class^='ArticleList_item']")
