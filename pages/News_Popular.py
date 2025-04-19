@@ -66,8 +66,10 @@ def render_popular_card(news):
 
         st.markdown('<div class="news-card">', unsafe_allow_html=True)
         st.markdown(f'<div class="news-title">{news["title"]}</div>', unsafe_allow_html=True)
-        st.markdown(f"[📰 기사 보기]({news['link']})", unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
+        if st.button("📊 기사 분석 보기", key=f"side_analyze_{news['link']}"):
+            st.session_state['news_url'] = news['link']
+            st.switch_page("pages/News_Analysis.py")
 
 # --- 인기 기사 렌더링 ---
 def get_popular_page():
