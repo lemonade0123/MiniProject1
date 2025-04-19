@@ -1,12 +1,7 @@
 import streamlit as st
 import os
 from dotenv import load_dotenv
-<<<<<<< HEAD
-from datetime import datetime, date
 import random
-=======
-
->>>>>>> origin/feature/NEWS-007
 # --- 컴포넌트 및 스크래퍼 임포트 ---
 from components.sidebar import render_sidebar
 from utils.web_scrap.web_scrapping_han import HaniEconomyScraper
@@ -69,12 +64,7 @@ def render_news_card(news):
                 f'<img src="{news["image"]}" class="fixed-image">',
                 unsafe_allow_html=True
             )
-<<<<<<< HEAD
         if st.button("📊 기사 분석 보기", key=f"analyze_{news['link']}_{random.randint(10000,100000)}"):
-=======
-
-        if st.button("📊 기사 분석 보기", key=f"analyze_{news['link']}"):
->>>>>>> origin/feature/NEWS-007
             st.session_state["news_url"] = news['link']
             st.switch_page("pages/News_Analysis.py")
 
