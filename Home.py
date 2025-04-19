@@ -19,11 +19,11 @@ st.title("📰 경제 뉴스 모아보기")
 
 # --- 스크래퍼 인스턴스 생성 ---
 hani_scraper = HaniEconomyScraper()
-naver_scraper = NaverEconomyScraper(delay=0.7)
+# naver_scraper = NaverEconomyScraper(delay=0.7)
 
 # --- 뉴스 스크랩 ---
 hani_news = hani_scraper.scrape(limit=20)  # 한겨레도 최대 20개 스크랩하도록 수정
-naver_news = naver_scraper.scrape_news(limit=20)  # 네이버도 최대 20개 스크랩
+# naver_news = naver_scraper.scrape_news(limit=20)  # 네이버도 최대 20개 스크랩
 
 # --- 뉴스 필터링 함수 ---
 def filter_news(news_list, start_date, end_date, keyword):
@@ -50,7 +50,7 @@ def filter_news(news_list, start_date, end_date, keyword):
 
 # --- 필터링 적용 ---
 filtered_hani_news = filter_news(hani_news, start_date, end_date, keyword)
-filtered_naver_news = filter_news(naver_news, start_date, end_date, keyword)
+# filtered_naver_news = filter_news(naver_news, start_date, end_date, keyword)
 
 # --- 두 컬럼으로 나누기 (가로폭 줄이기) ---
 col1, col2 = st.columns([0.5, 0.5], gap="small")
@@ -92,8 +92,10 @@ def render_news_card(news):
                 f'<img src="{news["image"]}" class="fixed-image">',
                 unsafe_allow_html=True
             )
-
-        st.markdown(f"[📰 기사 전체 보기]({news['link']})", unsafe_allow_html=True)
+        if st.button("📊 기사 분석 보기", key=f"analyze_{news['link']}"):
+            st.session_state["news_url"] = news['link']
+            st.switch_page("pages/News_Analysis.py")
+        # st.markdown(f"[📰 기사 전체 보기]({news['link']})", unsafe_allow_html=True)
 
         pub = news.get('pub_date', '등록일 없음')
         update = news.get('update_date', None)
@@ -122,3 +124,4 @@ with col2:
             render_news_card(news)
     else:
         st.write("🔎 조건에 맞는 네이버 뉴스를 찾을 수 없습니다.")
+
