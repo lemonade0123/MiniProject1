@@ -53,7 +53,8 @@ class HomePage:
                     f'<img src="{news["image"]}" class="fixed-image">',
                     unsafe_allow_html=True
                 )
-            if st.button("📊 기사 분석 보기", key=f"analyze_{news['link']}_{random.randint(10000,100000)}"):
+            if st.button("📊 기사 분석 보기", key=f"analyze_{news['link']}"):
+                st.session_state['news_url'] = news['link']
                 st.switch_page("pages/News_Analysis.py")
 
             pub = news.get('pub_date', '등록일 없음')
