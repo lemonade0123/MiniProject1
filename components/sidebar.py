@@ -46,9 +46,5 @@ def render_sidebar():
 
         st.markdown("---")
 
-        # --- 가장 많이 본 뉴스 버튼 추가 ---
-        if st.button("🔥 가장 많이 본 뉴스"):
-            st.switch_page("pages/News_Popular.py")
-
         # --- 값 리턴 ---
         return start_date, end_date, keyword

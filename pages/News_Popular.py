@@ -16,6 +16,7 @@ render_sidebar()
 
 st.title("🔥 한겨레 - 가장 많이 본 뉴스")
 
+# --- 인기 기사 가져오기 ---
 @st.cache_resource
 def get_popular_articles():
     options = Options()
@@ -42,24 +43,30 @@ def get_popular_articles():
     driver.quit()
     return news_list
 
-# --- 카드 스타일 뉴스 보여주기 ---
+# --- 카드 스타일 뉴스 보여주기 (크기 줄인 버전) ---
 def render_popular_card(news):
     with st.container():
         st.markdown("""<style>
             .news-card {
-                padding: 10px;
-                border: 1px solid #e6e6e6;
-                border-radius: 8px;
-                margin-bottom: 20px;
+                padding: 8px 12px;
+                border: 1px solid #e6e6e6
+                border-radius: 1px;
+                margin-bottom: 12px;
                 background-color: #fffbe6;
-                box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
-                max-width: 600px;
+                box-shadow: 1px 1px 3px rgba(0,0,0,0.05);
+                max-width: 500px;
+                font-size: 14px;
+            }
+            .news-title {
+                font-size: 16px;
+                font-weight: 600;
+                margin-bottom: 4px;
             }
             </style>""", unsafe_allow_html=True)
 
         st.markdown('<div class="news-card">', unsafe_allow_html=True)
-        st.subheader(news["title"])
-        st.markdown(f"[📰 기사 전체 보기]({news['link']})", unsafe_allow_html=True)
+        st.markdown(f'<div class="news-title">{news["title"]}</div>', unsafe_allow_html=True)
+        st.markdown(f"[📰 기사 보기]({news['link']})", unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
 # --- 인기 기사 렌더링 ---

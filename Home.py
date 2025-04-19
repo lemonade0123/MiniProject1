@@ -23,9 +23,9 @@ class HomePage:
             st.markdown("""
                 <style>
                 .news-card {
-                    padding: 10px;
+                    padding: 8px;
                     border: 1px solid #e6e6e6;
-                    border-radius: 8px;
+                    border-radius: 1px;
                     margin-bottom: 20px;
                     background-color: #fafafa;
                     box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
@@ -83,6 +83,7 @@ class HomePage:
         # --- 한겨레 뉴스 표시 ---
         with col1:
             st.header("한겨레 경제 뉴스")
+            st.markdown('<hr style="border: 1px solid #ccc;">', unsafe_allow_html=True)
             if hani_news:
                 for news in hani_news:
                     self.render_news_card(news)
@@ -92,6 +93,7 @@ class HomePage:
         # --- 네이버 뉴스 표시 ---
         with col2:
             st.header("네이버 경제 뉴스")
+            st.markdown('<hr style="border: 1px solid #ccc;">', unsafe_allow_html=True)
             if naver_news:
                 for news in naver_news:
                     self.render_news_card(news)
