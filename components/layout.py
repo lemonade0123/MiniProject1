@@ -14,7 +14,7 @@ def render_layout(title, left_func, col_ratio=(3, 1)):
 
         ## 오른쪽 사이드바 내용이 들어감
         with right_col:
-            st.markdown("<h2 style='font-size:32px;'>📰 가장 많이 본 뉴스</h2>", unsafe_allow_html=True)
+            st.markdown("<h2 style='font-size:28px;'>📰 가장 많이 본 뉴스</h2>", unsafe_allow_html=True)
             st.markdown('<hr style="border: 1px solid #ccc;">', unsafe_allow_html=True)
             get_popular_page()
             
