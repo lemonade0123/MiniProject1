@@ -5,6 +5,7 @@ import time
 class HaniEconomyScraper:
     def __init__(self):
         self.rss_url = "https://www.hani.co.kr/rss/economy/"
+        self.base_url = "https://www.hani.co.kr"
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
         }
@@ -25,7 +26,7 @@ class HaniEconomyScraper:
 
             news_list.append({
                 'title': title,
-                'link': link,
+                'link': self.base_url + link,
                 'image': image_url,
                 'pub_date': pub_date,
                 'update_date': update_date
@@ -145,7 +146,7 @@ class HaniEconomyScraper:
             # 시간 찾기
             pub_date = news.select_one("article > div[class^='BaseArticleCard_card'] > div[class^='BaseArticleCard_content'] > div > div").getText()
 
-            news_list.append({"title": title, "link": link, "image": image, "pub_date": pub_date})
+            news_list.append({"title": title, "link": self.base_url + link, "image": image, "pub_date": pub_date})
         
         return news_list
 

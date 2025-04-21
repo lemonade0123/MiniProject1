@@ -6,6 +6,7 @@ from utils.web_scrap.web_scrapping_naver import NaverEconomyScraper
 from utils.tokenizer.tokenizer import tokenizer
 from urllib.parse import urlparse
 from components.sidebar import render_sidebar
+from utils.graph.graph_visualizer import GraphVisualizer
 import re
 
 
@@ -15,6 +16,7 @@ class NewsAnalysis:
         self.tokenizer = tokenizer()
         self.haniEconomyScraper = HaniEconomyScraper()
         self.naverEconomyScraper = NaverEconomyScraper()
+        self.graphVisualizer = GraphVisualizer()
 
     def news_analysis(self):
         # 한겨레, 네이버뉴스 나누어야함.
@@ -37,14 +39,14 @@ class NewsAnalysis:
 
     def get_content(self):
         ## 원본. 밑에는 테스트용 값 박기
-        # news_url = st.session_state["news_url"]
-        news_url = "https://www.hani.co.kr/arti/economy/economy_general/1193192.html"
+        news_url = st.session_state["news_url"]
+        print(news_url)
         if self.is_valid_url(news_url):
             ## 뉴스를 가져오기
             news_info = self.get_news_info(news_url)
             ## 가져온 뉴스를 분석하기
             ## 단어 가져오기
-            keywords = self.tokenizer.top_five_keywords(news_info["news_text"])
+            keywords = self.tokenizer.top_keywords_count(news_info["news_text"], count=20)
             ## 요약
             summation = self.analyzer.summarize(news_info["news_text"])
             ## 분석한 내용을 토대로 뿌려주기
@@ -52,9 +54,16 @@ class NewsAnalysis:
             st.markdown(f"## {news_info["news_title"]}")
             st.markdown(f"### {news_info["news_publish_date"]}")
             # 단어 리스트
-            st.markdown(f"**키워드** {", ".join(keywords)}")
+            st.markdown(f"**키워드** {", ".join([keyword for keyword, _ in keywords])}")
             # 요약본
             st.markdown(f"요약 : {summation}")
+            
+            ## 단어 시각화
+            if len(keywords) == 0 :
+                st.warning("데이터가 비어 있어요. 먼저 데이터를 확인해주세요.")
+            else:
+                fig = self.graphVisualizer.generate_wordcloud_figure(keywords)
+                st.pyplot(fig)  
 
         else:
             st.markdown("## 조회되지 않는 url 입니다.")
