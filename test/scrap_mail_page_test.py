@@ -5,12 +5,13 @@ import os
 # 루트 디렉토리 경로 추가
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from utils.web_scrap.web_scrapping_han import HaniEconomyScraper
+from utils.web_scrap.web_scrapping_mail import MailWebScrapping
 from utils.tokenizer.tokenizer import tokenizer
 from utils.database.db_config import get_db
 from collections import Counter
 
 
-HaniEconomyScraper().scrap_all_page()
+print(MailWebScrapping().scrape_all_page(page_range = 3))
+
 
 
