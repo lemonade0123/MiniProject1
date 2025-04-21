@@ -42,7 +42,7 @@ class GraphVisualizer:
     
     def generate_wordcloud_figure(self, keywords):
         
-        wc = WordCloud(font_path=self.font_path, width=800, height=400, background_color='white')
+        wc = WordCloud(font_path=self.font_path, width=600, height=400, background_color='white')
         
         if not isinstance(keywords, dict):
             try:

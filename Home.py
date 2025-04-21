@@ -49,7 +49,6 @@ class HomePage:
                 </style>
             """, unsafe_allow_html=True)
 
-            st.markdown('<div class="news-card">', unsafe_allow_html=True)
 
             st.subheader(news["title"])
 
@@ -69,7 +68,6 @@ class HomePage:
             else:
                 st.caption(f"🕓 작성일: {pub}")
 
-            st.markdown('</div>', unsafe_allow_html=True)
 
     def home_page(self):
         # --- 스크래퍼 인스턴스 생성 ---
