@@ -75,4 +75,4 @@ class NewsAggregate:
 
 
 render_sidebar()
-render_layout("📰 통계 페이지지", NewsAggregate().get_content)
+render_layout("📰 통계 페이지", NewsAggregate().get_content)

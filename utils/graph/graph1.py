@@ -29,7 +29,7 @@ class KeywordVisualization:
         # 폰트 설정
         self.font_prop = fm.FontProperties(fname=self.font_path).get_name()
         plt.rcParams['font.family'] = self.font_prop
-
+        plt.style.use("ggplot") 
     def visualize_heatmap(self, df):
         """히트맵을 생성하는 함수"""
         
@@ -37,7 +37,7 @@ class KeywordVisualization:
         
         pivot_df = df.pivot_table(index='append_date', columns='append_word', values='append_count', fill_value=0)
         
-        fig, ax = plt.subplots(figsize=(14, 8))
+        fig, ax = plt.subplots(figsize=(12, 6))
         sns.heatmap(pivot_df,annot=False, fmt='1f', cmap='YlOrBr')
         plt.title('일별 키워드 등장 히트맵')
         plt.ylabel('날짜')
@@ -52,7 +52,7 @@ class KeywordVisualization:
         
         day_df = df[df['append_date'] == date].sort_values(by='append_count', ascending=False)
         
-        fig, ax = plt.subplots(figsize=(10, 6))
+        fig, ax = plt.subplots(figsize=(12, 6))
         sns.barplot(data=day_df, x='append_word', y='append_count', palette='viridis')
         plt.title(f"{date} 키워드 등장 횟수")
         plt.xlabel("키워드")
@@ -68,7 +68,7 @@ class KeywordVisualization:
         
         keyword_df = df[df['append_word'] == keyword]
         
-        fig, ax = plt.subplots(figsize=(10, 5))
+        fig, ax = plt.subplots(figsize=(12, 6   ))
         sns.lineplot(data=keyword_df, x='append_date', y='append_count', marker='o')
         plt.title(f'"{keyword}" 키워드 일별 등장 추이')
         plt.xlabel("날짜")
