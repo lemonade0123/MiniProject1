@@ -46,8 +46,5 @@ def render_sidebar():
 
         st.markdown("---")
 
-        # --- 리턴해서 main.py 쪽에서 필터링 ---
+        # --- 값 리턴 ---
         return start_date, end_date, keyword
-
-            
-        
