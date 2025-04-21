@@ -32,13 +32,13 @@ class NewsAggregate:
             # 날짜 컬럼을 datetime 형식으로 변환
             df['append_date'] = pd.to_datetime(df['append_date'])
 
-            # 날짜 범위 선택
-            st.subheader("기간을 선택하세요")
             col1, col2 = st.columns(2)
             with col1:
-                start_date = st.date_input("시작 날짜", datetime.today() - timedelta(days=6))
+                st.markdown("#### 시작 날짜")
+                start_date = st.date_input(label="",value=datetime.today() - timedelta(days=6))
             with col2:
-                end_date = st.date_input("종료 날짜", datetime.today())
+                st.markdown("#### 종료 날짜")
+                end_date = st.date_input(label="",value=datetime.today())
 
             # 날짜 범위 필터링
             mask = (df['append_date'] >= pd.to_datetime(start_date)) & (df['append_date'] <= pd.to_datetime(end_date))
@@ -50,25 +50,31 @@ class NewsAggregate:
                 default_keyword = top_keywords[0] if top_keywords else "AI"
 
                 # 바 차트
-                st.subheader("바 차트")
+                st.subheader("📊 키워드 통계")
                 self.visualizer.bar_chart(df, start_date, end_date)
 
                 # 워드클라우드 + 키워드 선택
                 col1, col2 = st.columns([1, 1])
 
                 with col1:
-                    st.subheader("워드클라우드 (최근 7일)")
+                    st.markdown("")
+                    st.subheader("유행 단어")
                     self.visualizer.generate_wordcloud_last_week()
 
                 with col2:
-                    st.subheader(" 키워드를 선택하세요")
+                    keyword_sql = "select append_word , sum(append_count) from word_list group by append_word order by sum(append_count) desc"
+                    keyword_df = self.visualizer.db.fetch_df(keyword_sql)
+                    
+                    
+                    st.markdown("")
+                    st.subheader(" 📈 단어별 통계 ")
                     keyword_input = st.selectbox(
                     label="키워드 선택",
-                    options=range_df['append_word'].unique(),
-                    index=range_df['append_word'].tolist().index(default_keyword) if default_keyword in range_df['append_word'].tolist() else 0
+                    options=keyword_df['append_word'].unique(),
+                    index=keyword_df['append_word'].tolist().index(default_keyword) if default_keyword in keyword_df['append_word'].tolist() else 0
                     )
 
-                    st.subheader(f" 라인 차트 - 키워드: {keyword_input}")
+                    
                     self.visualizer.line_chart(df, keyword_input)
 
             else:
