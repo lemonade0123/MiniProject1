@@ -42,7 +42,7 @@ class GraphVisualizer:
     
     def generate_wordcloud_figure(self, keywords):
         
-        wc = WordCloud(font_path=self.font_path, width=700, height=400, background_color='white')
+        wc = WordCloud(font_path=self.font_path, width=800, height=400, background_color='white')
         
         if not isinstance(keywords, dict):
             try:
@@ -59,3 +59,16 @@ class GraphVisualizer:
         plt.axis('off')
         return fig
         
+        
+    def generate_pychart_figure(self, data, title=""):
+        labels = list(data.keys())
+        sizes = list(data.values())
+
+        # 원그래프 그리기
+        fig, ax = plt.subplots()
+        ax.pie(sizes, labels=labels, autopct='%.1f%%', startangle=90, counterclock = False, colors=['#66b3ff', '#ff9999'], textprops={'size':20})
+        ax.axis('equal')  # 원형 유지
+        plt.legend(loc = (1, 0.6), title = title)
+        plt.title(title)
+        
+        return fig

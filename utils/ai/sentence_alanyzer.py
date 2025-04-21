@@ -60,7 +60,7 @@ class SentenceAnalyzer:
         labels_map = {0: "부정", 1: "긍정"}  # 모델 라벨 매핑
         percentage = probs.tolist()[0]
       
-        return  {"sentiment": labels_map[label], "positive_percentage": percentage[0], "negative_percentage": percentage[1]}
+        return  {"긍정": percentage[0], "부정": percentage[1]}
     
     
 ## 테스트 데이터

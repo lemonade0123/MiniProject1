@@ -48,40 +48,62 @@ class NewsAnalysis:
             news_info = self.get_news_info(news_url)
             
              # 타이틀, 날짜 출력
-            st.markdown(f"## {news_info["news_title"]}")
-            st.markdown(f"### {news_info["news_publish_date"]}")
+            st.markdown(f"## 💡 {news_info["news_title"]}")
+            st.markdown(f"##### 🕑출판일 : {news_info["news_publish_date"]}")
             
             
-            left_col, right_col = st.columns((3,2))
+            left_col, right_col, whitespace = st.columns((9, 7, 1))
 
             ## 단어 가져오기
             keywords = self.tokenizer.top_keywords_count(news_info["news_text"], count=20)
             
-            # 단어 리스트
-            st.markdown(f"**키워드** {", ".join([keyword for keyword, _ in keywords])}")
             
             with left_col:
                 ## 단어 시각화
                 if len(keywords) == 0 :
                     st.warning("데이터가 비어 있어요. 먼저 데이터를 확인해주세요.")
                 else:
+                    
+                    st.markdown(f"## 🔑 키워드 ")
                     fig = self.graphVisualizer.generate_wordcloud_figure(keywords)
                     st.pyplot(fig)  
                     
+                    # keyword_df = self.graphVisualizer.generate_dataframe(sorted(keywords, key=lambda x: x[1], reverse=True)[:5], ["키워드","등장 수"])
+                    # styled_table = keyword_df.to_html(index=False)
+                    # styled_html = f"""
+                    # <div style="font-size: 20px;">
+                    #     {styled_table}
+                    # </div>
+                    # """
+
+                    # st.markdown(styled_html, unsafe_allow_html=True)
+            
                     
             with right_col:
-                print(self.analyzer.analyze_sentiment(news_info["news_text"]))
-                st.markdown("### 🔑 키워드 등장")
-                st.write(self.graphVisualizer.generate_dataframe(sorted(keywords, key=lambda x: x[1], reverse=True)[:5], ["키워드","등장 수"]))
+
+                st.markdown(f"## 🔗 URL ")
+                st.markdown(f"#### {news_url}")
+                st.markdown("<br>", unsafe_allow_html=True)  # 두 줄 띄우기
+                
+                sentiment_result = ""
+                sentiment_data = self.analyzer.analyze_sentiment(news_info["news_text"])
+                if(sentiment_data["부정"] < sentiment_data["긍정"]):
+                    sentiment_result = f"😀 긍정 : {format(sentiment_data["긍정"], '.2f')}"
+                else:
+                    sentiment_result = f"😢 부정 : {format(sentiment_data["부정"], '.2f')} "
+                    
+                
+                st.markdown(f"## 📝 감성분석 결과:  {sentiment_result}")
+                st.markdown("<br>", unsafe_allow_html=True)  # 두 줄 띄우기
+                    
+                # sentiment_fig = self.graphVisualizer.generate_pychart_figure(title="감성분석", data=sentiment_data)
+                # st.pyplot(sentiment_fig)  
                 ## 요약
                 summation = self.analyzer.summarize(news_info["news_text"])
                 # 요약본
-                st.markdown(f"### 📝 요약 ")
-                st.markdown(f'{summation}')
-
-           
-
-
+                st.markdown(f"## 💬 요약 ")
+                st.markdown(f'#### {summation}')
+                
 
         else:
             st.markdown("## 조회되지 않는 url 입니다.")
