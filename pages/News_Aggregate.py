@@ -23,14 +23,13 @@ class NewsAggregate:
         self.visualizer = KeywordVisualization()
         
         
-        
     def get_content(self):
-                # 데이터 조회
+    # 데이터 조회
         sql = "SELECT * FROM word_list"
         df = self.visualizer.db.fetch_df(sql)
 
-        #  오늘 날짜 문자열
         today_str = datetime.today().strftime("%Y-%m-%d")
+
         if not df.empty:
             # 날짜 선택
             selected_date = st.date_input("날짜를 선택하세요", datetime.today())
@@ -41,38 +40,30 @@ class NewsAggregate:
             top_keywords = today_df.sort_values(by='append_count', ascending=False)['append_word'].tolist()
             default_keyword = top_keywords[0] if top_keywords else "AI"
 
-            # 키워드 선택
-            keyword_input = st.selectbox(
-                "확인할 키워드를 선택하세요",
-                options=df['append_word'].unique(),
-                index=df['append_word'].tolist().index(default_keyword) if default_keyword in df['append_word'].tolist() else 0
-            )
+            # 바 차트 (1행 전체)
+            st.subheader("바 차트")
+            self.visualizer.bar_chart(df, selected_date_str)
 
-            # 1행
-            row1_col1, row1_col2 = st.columns(2)
+            # 2행: 워드클라우드 + 키워드 선택 + 라인 차트
+            col1, col2 = st.columns([2, 2])
 
-            with row1_col1:
-                st.subheader("히트맵")
-                self.visualizer.visualize_heatmap(df)
+            with col1:
+                st.subheader("워드클라우드 (최근 7일)")
+                self.visualizer.generate_wordcloud_last_week()
 
-            with row1_col2:
-                st.subheader("바 차트")
-                self.visualizer.bar_chart(df, selected_date_str)
+            with col2:
+                
+                keyword_input = st.selectbox(
+                    label="키워드 선택",
+                    options=df['append_word'].unique(),
+                    index=df['append_word'].tolist().index(default_keyword) if default_keyword in df['append_word'].tolist() else 0
+                )
 
-            # 2행
-            row2_col1, row2_col2 = st.columns(2)
-
-            with row2_col1:
                 st.subheader(f"라인 차트 - 키워드: {keyword_input}")
                 self.visualizer.line_chart(df, keyword_input)
 
-            with row2_col2:
-                st.subheader("워드 클라우드 (최근 7일)")
-                self.visualizer.generate_wordcloud_last_week()
-
         else:
             st.warning("데이터가 비어 있어요. 먼저 데이터를 확인해주세요.")
-
 
 render_sidebar()
 render_layout("📰 통계 페이지", NewsAggregate().get_content)

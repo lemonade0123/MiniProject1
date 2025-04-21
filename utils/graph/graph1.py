@@ -29,7 +29,7 @@ class KeywordVisualization:
         # 폰트 설정
         self.font_prop = fm.FontProperties(fname=self.font_path).get_name()
         plt.rcParams['font.family'] = self.font_prop
-        plt.style.use("ggplot") 
+
     def visualize_heatmap(self, df):
         """히트맵을 생성하는 함수"""
         
@@ -68,7 +68,7 @@ class KeywordVisualization:
         
         keyword_df = df[df['append_word'] == keyword]
         
-        fig, ax = plt.subplots(figsize=(12, 6   ))
+        fig, ax = plt.subplots(figsize=(12, 6))
         sns.lineplot(data=keyword_df, x='append_date', y='append_count', marker='o')
         plt.title(f'"{keyword}" 키워드 일별 등장 추이')
         plt.xlabel("날짜")
@@ -111,5 +111,6 @@ class KeywordVisualization:
         plt.imshow(wc, interpolation='bilinear')
         plt.axis('off')
         plt.title(f"{start_str} ~ {end_str} 워드클라우드")
+        plt.tight_layout()
         st.pyplot(fig)  
         
