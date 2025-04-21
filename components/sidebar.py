@@ -7,7 +7,6 @@ load_dotenv()
 
 def render_sidebar():
     
-    st.set_page_config(layout="wide")
     with st.sidebar:
         # --- 로고 (필요시 주석 해제) ---
         # st.image("assets/logo.png", use_column_width=True)
