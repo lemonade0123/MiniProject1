@@ -48,3 +48,10 @@ if st.button("라인 차트 보기"):
         st.warning("데이터가 비어 있어요. 먼저 데이터를 확인해주세요.")
     else:
         visualizer.line_chart(df, selected_keyword)
+        
+if st.button("최근 일주일 간의 워드클라우드 생성"):
+    if df.empty:
+        st.warning("데이터가 비어 있어요. 먼저 데이터를 확인해주세요.")
+    else:
+        visualizer.generate_wordcloud_last_week()
+# streamlit run MiniProject1\utils\graph\graph_test.py

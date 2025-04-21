@@ -37,13 +37,13 @@ class KeywordVisualization:
         
         pivot_df = df.pivot_table(index='append_date', columns='append_word', values='append_count', fill_value=0)
         
-        plt.figure(figsize=(14, 8))
+        fig, ax = plt.subplots(figsize=(14, 8))
         sns.heatmap(pivot_df, annot=True, fmt='1f', cmap='YlOrBr')
         plt.title('일별 키워드 등장 히트맵')
         plt.ylabel('날짜')
         plt.xlabel('키워드')
         plt.tight_layout()
-        st.pyplot()  # Streamlit에서 시각화 결과 출력
+        st.pyplot(fig)  # Streamlit에서 시각화 결과 출력
 
     def bar_chart(self, df, date):
         """날짜별 키워드 등장 횟수 바 차트"""
@@ -52,14 +52,14 @@ class KeywordVisualization:
         
         day_df = df[df['append_date'] == date].sort_values(by='append_count', ascending=False)
         
-        plt.figure(figsize=(10, 6))
+        fig, ax = plt.subplots(figsize=(10, 6))
         sns.barplot(data=day_df, x='append_word', y='append_count', palette='viridis')
         plt.title(f"{date} 키워드 등장 횟수")
         plt.xlabel("키워드")
         plt.ylabel("등장 횟수")
         plt.xticks(rotation=45)
         plt.tight_layout()
-        st.pyplot()  # Streamlit에서 시각화 결과 출력
+        st.pyplot(fig)  # Streamlit에서 시각화 결과 출력
     
     def line_chart(self, df, keyword):
         """키워드 일별 등장 추이 라인 차트"""
@@ -68,14 +68,14 @@ class KeywordVisualization:
         
         keyword_df = df[df['append_word'] == keyword]
         
-        plt.figure(figsize=(10, 5))
+        fig, ax = plt.subplots(figsize=(10, 5))
         sns.lineplot(data=keyword_df, x='append_date', y='append_count', marker='o')
         plt.title(f'"{keyword}" 키워드 일별 등장 추이')
         plt.xlabel("날짜")
         plt.ylabel("등장 횟수")
         plt.grid(True)
         plt.tight_layout()
-        st.pyplot()  # Streamlit에서 시각화 결과 출력
+        st.pyplot(fig)  # Streamlit에서 시각화 결과 출력
     
     def generate_wordcloud_last_week(self):
         """최근 일주일 간의 워드클라우드 생성"""
@@ -107,9 +107,9 @@ class KeywordVisualization:
         wc.generate_from_frequencies(word_freq)
 
         # 시각화
-        plt.figure(figsize=(12, 6))
+        fig, ax = plt.subplots(figsize=(12, 6))
         plt.imshow(wc, interpolation='bilinear')
         plt.axis('off')
         plt.title(f"{start_str} ~ {end_str} 워드클라우드")
-        st.pyplot()  
+        st.pyplot(fig)  
         
