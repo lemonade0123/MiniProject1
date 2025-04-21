@@ -45,21 +45,25 @@ class KeywordVisualization:
         plt.tight_layout()
         st.pyplot(fig)  # Streamlit에서 시각화 결과 출력
 
-    def bar_chart(self, df, date):
-        """날짜별 키워드 등장 횟수 바 차트"""
-        
+    def bar_chart(self, df, start_date, end_date):
+        """선택한 기간 내 키워드 등장 횟수 바 차트"""
+        df['append_date'] = pd.to_datetime(df['append_date'])  # datetime 변환
         df['append_count'] = df['append_count'].astype(int)
-        
-        day_df = df[df['append_date'] == date].sort_values(by='append_count', ascending=False)
-        
+
+        mask = (df['append_date'] >= pd.to_datetime(start_date)) & (df['append_date'] <= pd.to_datetime(end_date))
+        filtered_df = df.loc[mask]
+
+        grouped = filtered_df.groupby('append_word')['append_count'].sum().reset_index()
+        top_keywords = grouped.sort_values(by='append_count', ascending=False).head(35)
+
         fig, ax = plt.subplots(figsize=(12, 6))
-        sns.barplot(data=day_df, x='append_word', y='append_count', palette='viridis')
-        plt.title(f"{date} 키워드 등장 횟수")
+        sns.barplot(data=top_keywords, x='append_word', y='append_count', palette='viridis')
+        plt.title(f"{start_date} ~ {end_date} 키워드 등장 횟수 (상위 35개)")
         plt.xlabel("키워드")
         plt.ylabel("등장 횟수")
         plt.xticks(rotation=45)
         plt.tight_layout()
-        st.pyplot(fig)  # Streamlit에서 시각화 결과 출력
+        st.pyplot(fig)
     
     def line_chart(self, df, keyword):
         """키워드 일별 등장 추이 라인 차트"""
