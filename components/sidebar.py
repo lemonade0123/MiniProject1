@@ -3,14 +3,23 @@ import os
 from dotenv import load_dotenv
 from datetime import date
 from PIL import Image
-
+import base64
 load_dotenv()
 
 def render_sidebar():
     
     with st.sidebar:
-        image = Image.open("assets/logo.jpg")
-        st.image(image, use_column_width=True)
+
+        with open("assets/logo.jpg", "rb") as img_file:
+            encoded_string = base64.b64encode(img_file.read()).decode("utf-8")
+        st.markdown(
+            f"""
+            <a href="/" target="_self">
+            <img src="data:image/jpeg;base64,{encoded_string}" width="100%" />
+            </a>
+            """,
+            unsafe_allow_html=True,
+        )
         # --- 로고 (필요시 주석 해제) ---
         # st.image("assets/logo.png", use_column_width=True)
         st.markdown("---")
