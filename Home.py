@@ -102,6 +102,5 @@ class HomePage:
                 st.write("🔎 네이버 뉴스를 불러올 수 없습니다.")
 
 
-st.set_page_config(layout="wide")
 render_sidebar()
 render_layout("📰 경제 뉴스 모아보기", left_func=HomePage().home_page)

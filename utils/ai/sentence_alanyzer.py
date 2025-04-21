@@ -57,9 +57,10 @@ class SentenceAnalyzer:
         logits = outputs.logits
         probs = F.softmax(logits, dim=1)  # 확률로 변환
         label = torch.argmax(probs, dim=1).item()
-
         labels_map = {0: "부정", 1: "긍정"}  # 모델 라벨 매핑
-        return labels_map[label]
+        percentage = probs.tolist()[0]
+      
+        return  {"sentiment": labels_map[label], "positive_percentage": percentage[0], "negative_percentage": percentage[1]}
     
     
 ## 테스트 데이터

@@ -30,56 +30,19 @@ class GraphVisualizer:
         self.font_prop = fm.FontProperties(fname=self.font_path).get_name()
         plt.rcParams['font.family'] = self.font_prop
 
-    def visualize_heatmap(self, df):
-        """히트맵을 생성하는 함수"""
+    def generate_dataframe(self, keywords, headers):
+        if isinstance(keywords, dict):
+            data = list(keywords.items())
+        elif isinstance(keywords, list):
+            data = keywords    
         
-        df['append_count'] = df['append_count'].astype(int)
-        
-        pivot_df = df.pivot_table(index='append_date', columns='append_word', values='append_count', fill_value=0)
-        
-        fig, ax = plt.subplots(figsize=(14, 8))
-        sns.heatmap(pivot_df, annot=True, fmt='1f', cmap='YlOrBr')
-        plt.title('일별 키워드 등장 히트맵')
-        plt.ylabel('날짜')
-        plt.xlabel('키워드')
-        plt.tight_layout()
-        st.pyplot(fig)  # Streamlit에서 시각화 결과 출력
-
-    def bar_chart(self, df, date):
-        """날짜별 키워드 등장 횟수 바 차트"""
-        
-        df['append_count'] = df['append_count'].astype(int)
-        
-        day_df = df[df['append_date'] == date].sort_values(by='append_count', ascending=False)
-        
-        fig, ax = plt.subplots(figsize=(10, 6))
-        sns.barplot(data=day_df, x='append_word', y='append_count', palette='viridis')
-        plt.title(f"{date} 키워드 등장 횟수")
-        plt.xlabel("키워드")
-        plt.ylabel("등장 횟수")
-        plt.xticks(rotation=45)
-        plt.tight_layout()
-        st.pyplot(fig)  # Streamlit에서 시각화 결과 출력
-    
-    def line_chart(self, df, keyword):
-        """키워드 일별 등장 추이 라인 차트"""
-        
-        df['append_count'] = df['append_count'].astype(int)
-        
-        keyword_df = df[df['append_word'] == keyword]
-        
-        fig, ax = plt.subplots(figsize=(10, 5))
-        sns.lineplot(data=keyword_df, x='append_date', y='append_count', marker='o')
-        plt.title(f'"{keyword}" 키워드 일별 등장 추이')
-        plt.xlabel("날짜")
-        plt.ylabel("등장 횟수")
-        plt.grid(True)
-        plt.tight_layout()
-        st.pyplot(fig)  # Streamlit에서 시각화 결과 출력
+            # 인덱스를 1부터 시작하도록 설정
+        df = pd.DataFrame(data, columns=headers, index=range(1, len(data) + 1))
+        return df
     
     def generate_wordcloud_figure(self, keywords):
         
-        wc = WordCloud(font_path=self.font_path, width=800, height=400, background_color='white')
+        wc = WordCloud(font_path=self.font_path, width=700, height=400, background_color='white')
         
         if not isinstance(keywords, dict):
             try:
