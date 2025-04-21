@@ -120,7 +120,7 @@ class HaniEconomyScraper:
         return result
         
         
-    def scrape_v2(self, limit=20):
+    def scrape_v2(self, limit=20, page=1):
 
         ## 검색        
         res = requests.get("https://www.hani.co.kr/arti/economy/economy_general", headers=self.headers)
@@ -150,6 +150,14 @@ class HaniEconomyScraper:
         
         return news_list
 
+
+    def scrap_all_page(self):
+        news_list = []
+        for i in range(1,3):
+            news_list.extend(self.scrape_v2(page=i))
+        
+        print(news_list)  
+            
 
         
         

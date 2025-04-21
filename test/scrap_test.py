@@ -45,7 +45,7 @@ else:
 aggregate_word_list =dict(Counter(word_raw_list))
 
 
-date = "2025-04-17"  # 임시 날짜
+date = "2025-04-21"  # 임시 날짜
 append_word_list = [{"append_date": date, "append_word": word, "append_count": count} for word, count in aggregate_word_list.items()]
 
    
