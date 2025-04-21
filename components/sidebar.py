@@ -2,12 +2,15 @@ import streamlit as st
 import os
 from dotenv import load_dotenv
 from datetime import date
+from PIL import Image
 
 load_dotenv()
 
 def render_sidebar():
     
     with st.sidebar:
+        image = Image.open("assets/logo.jpg")
+        st.image(image, use_column_width=True)
         # --- 로고 (필요시 주석 해제) ---
         # st.image("assets/logo.png", use_column_width=True)
         st.markdown("---")

@@ -44,7 +44,17 @@ class NaverEconomyScraper:
 
                 time.sleep(self.delay)
 
-        return news_list
+        unique_news_list = []
+        seen_links = set()
+
+        for news in news_list:
+            link = news['link']
+            if link not in seen_links:
+                seen_links.add(link)
+                unique_news_list.append(news)
+                
+        
+        return unique_news_list
 
     def fetch_article_date(self, article_url):
         """기사 상세 페이지에 들어가서 작성 날짜 가져오기"""
