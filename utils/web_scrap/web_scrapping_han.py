@@ -120,10 +120,14 @@ class HaniEconomyScraper:
         return result
         
         
-    def scrape_v2(self, limit=20):
+    def scrape_v2(self, limit=20, page=1):
 
+        url = "https://www.hani.co.kr/arti/economy/economy_general"
+        if(page != 1):
+            url = f'{url}?page={page}'
         ## 검색        
-        res = requests.get("https://www.hani.co.kr/arti/economy/economy_general", headers=self.headers)
+        res = requests.get(url, headers=self.headers)
+        
         res.encoding = "utf-8"
         soup = BeautifulSoup(res.text, "html.parser")
 
@@ -150,6 +154,13 @@ class HaniEconomyScraper:
         
         return news_list
 
+
+    def scrap_all_page(self, page_range=2):
+        news_list = []
+        for i in range(1,page_range + 1):
+            news_list.extend(self.scrape_v2(page=i))
+        
+        return news_list
 
         
         
