@@ -17,6 +17,17 @@ from utils.tokenizer.tokenizer import tokenizer
 from utils.database.db_config import get_db
 from collections import Counter
 from collections import defaultdict
+from datetime import datetime
+
+
+def normalize_date(date_str):
+    for fmt in ("%Y-%m-%d", "%m.%d %Y"):  # 가능한 포맷들
+        try:
+            dt = datetime.strptime(date_str, fmt)
+            return dt.strftime("%Y-%m-%d")  # yyyy-mm-dd로 변환
+        except ValueError:
+            continue
+    raise ValueError(f"Unrecognized date format: {date_str}")
 
 
 '''
@@ -45,7 +56,7 @@ word_tokenizer = tokenizer()
 for news in news_items:
     word_tokenizer_list = word_tokenizer.extract_keywords(news['title'])
     for word in word_tokenizer_list:
-        key = (news['pub_date'], word)  # (날짜, 단어)를 키로 사용
+        key = (normalize_date(news['pub_date'][:10]), word)  # (날짜, 단어)를 키로 사용
         aggregated[key] += 1  # 등장 횟수 누적
 
 # 정리된 결과를 리스트로 변환

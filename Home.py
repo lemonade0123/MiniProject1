@@ -18,7 +18,7 @@ class HomePage:
         pass
     
     # --- 카드 렌더링 함수 ---
-    def render_news_card(self, news):
+    def render_news_card(self, news, media=""):
         with st.container():
             st.markdown("""
                 <style>
@@ -52,7 +52,8 @@ class HomePage:
                     f'<img src="{news["image"]}" class="fixed-image">',
                     unsafe_allow_html=True
                 )
-            if st.button("📊 기사 분석 보기", key=f"analyze_{news['link']}"):
+            if st.button("📊 기사 분석 보기", key=f"analyze_{media}_{news['link']}"):
+                print(news['link'])
                 st.session_state['news_url'] = news['link']
                 st.switch_page("pages/News_Analysis.py")
 
@@ -86,7 +87,7 @@ class HomePage:
             st.markdown('<hr style="border: 1px solid #ccc;">', unsafe_allow_html=True)
             if hani_news:
                 for news in hani_news:
-                    self.render_news_card(news)
+                    self.render_news_card(news, media="hani")
             else:
                 st.write("🔎 한겨레 뉴스를 불러올 수 없습니다.")
 
@@ -96,7 +97,7 @@ class HomePage:
             st.markdown('<hr style="border: 1px solid #ccc;">', unsafe_allow_html=True)
             if naver_news:
                 for news in naver_news:
-                    self.render_news_card(news)
+                    self.render_news_card(news, media="naver")
             else:
                 st.write("🔎 네이버 뉴스를 불러올 수 없습니다.")
 
