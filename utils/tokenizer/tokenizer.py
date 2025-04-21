@@ -52,8 +52,15 @@ class tokenizer:
             raise TypeError("입력은 str 또는 list[str] 타입이어야 합니다.")
     
     
-    def top_five_keywords(self, texts):
+    def top_keywords(self, texts, count=5):
         keywords = self.extract_keywords(texts)
         counter = Counter(keywords)
-        top_5 = counter.most_common(5)
-        return [keyword for keyword, _ in top_5]
+        top_count = counter.most_common(count)
+        return [keyword for keyword, _ in top_count]
+    
+    
+    def top_keywords_count(self, texts, count=5):
+        keywords = self.extract_keywords(texts)
+        counter = Counter(keywords)
+        top_count = counter.most_common(count)
+        return top_count

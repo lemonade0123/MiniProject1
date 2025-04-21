@@ -6,6 +6,7 @@ from datetime import date
 load_dotenv()
 
 def render_sidebar():
+    
     with st.sidebar:
         # --- 로고 (필요시 주석 해제) ---
         # st.image("assets/logo.png", use_column_width=True)
